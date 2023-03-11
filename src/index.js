@@ -31,12 +31,15 @@ async function handleSearchFormSubmit(event) {
   messageEl.classList.add('is-hidden');
 
   page = 1;
-  searchQuery = searchFormEl.elements.searchQuery.value;
+  searchQuery = searchFormEl.elements.searchQuery.value.trim();
+  if (!searchQuery) {
+    return;
+  }
 
   try {
     const response = await getImages(searchQuery, page, PAGINATION);
 
-    if (response.data.hits.length === 0 || searchQuery === '') {
+    if (response.data.hits.length === 0) {
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
